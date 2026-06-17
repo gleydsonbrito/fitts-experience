@@ -13,6 +13,8 @@
             --success: #10b981;
             --danger: #ef4444;
             --text: #1e293b;
+            /* Base de tamanho de fonte para controle do REM */
+            font-size: 16px;
         }
 
         * {
@@ -25,20 +27,25 @@
         body {
             display: flex;
             flex-direction: column;
+            width: 100%;
+            min-height: 100vh;
             color: var(--text);
-            overflow: hidden;
+            background-color: #f8fafc;
+            /* Proíbe estritamente a rolagem horizontal, mas permite a vertical se faltar espaço */
+            overflow-x: hidden;
+            overflow-y: auto;
         }
 
-        /* Estrutura das Três Seções Verticais */
+        /* Estrutura das Três Seções Verticais - Agora Flexíveis */
         .secao {
             flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            padding: 20px 40px;
+            min-height: 33.33vh; /* Garante que dividam a tela igualmente se houver espaço */
+            padding: 1.25rem 2rem;
             position: relative;
-            border-bottom: 2px solid rgba(0,0,0,0.05);
-            transition: all 0.3s ease;
+            border-bottom: 0.0625rem solid rgba(0,0,0,0.08);
         }
 
         #secao1 { background-color: var(--bg-secao1); }
@@ -46,23 +53,25 @@
         #secao3 { background-color: var(--bg-secao3); border-bottom: none; }
 
         .titulo-secao {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 600;
-            margin-bottom: 15px;
+            margin-bottom: 0.75rem;
             color: #475569;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
         }
 
         .resultado-tempo {
-            font-size: 1.1rem;
+            font-size: 0.95rem;
             font-weight: bold;
             color: var(--success);
             background: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            padding: 0.2rem 0.75rem;
+            border-radius: 1.25rem;
+            box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.05);
             display: none;
         }
 
@@ -70,8 +79,8 @@
         .wrapper-opcoes {
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            max-width: 1200px;
+            gap: 0.5rem;
+            max-width: 75rem;
             width: 100%;
         }
 
@@ -79,13 +88,14 @@
             display: flex;
             align-items: center;
             width: 100%;
+            min-height: 2.5rem;
         }
 
         select, input[type="text"] {
-            padding: 10px 14px;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            font-size: 0.95rem;
+            padding: 0.5rem 0.75rem;
+            border: 0.0625rem solid #cbd5e1;
+            border-radius: 0.375rem;
+            font-size: 0.9rem;
             background-color: white;
             outline: none;
             transition: border-color 0.2s;
@@ -114,14 +124,14 @@
             justify-content: space-between;
         }
         #secao1 select {
-            width: 250px;
+            width: 14rem;
         }
         #secao1 button {
-            padding: 4px 8px;
+            padding: 0.25rem 0.6rem;
             font-size: 0.75rem;
             background-color: #64748b;
             color: white;
-            border-radius: 4px;
+            border-radius: 0.25rem;
         }
         #secao1 button:not(:disabled):hover {
             background-color: #475569;
@@ -130,23 +140,23 @@
         /* SEÇÃO 2: Melhor Cenário (Botão Perto e Grande) */
         #secao2 .linha-opcao {
             justify-content: flex-start;
-            gap: 15px;
+            gap: 0.75rem;
         }
         #secao2 select {
-            width: 280px;
+            width: 15rem;
         }
         #secao2 button {
-            padding: 10px 24px;
-            font-size: 0.95rem;
+            padding: 0.5rem 1.25rem;
+            font-size: 0.9rem;
             background-color: var(--primary);
             color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
+            border-radius: 0.375rem;
+            box-shadow: 0 0.125rem 0.25rem rgba(59, 130, 246, 0.2);
             transition: background-color 0.2s, transform 0.2s;
         }
         #secao2 button:not(:disabled):hover {
             background-color: #2563eb;
-            transform: translateY(-1px);
+            transform: translateY(-0.0625rem);
         }
 
         /* SEÇÃO 3: A Brincadeira do Botão Fujão */
@@ -154,15 +164,15 @@
             display: flex;
             align-items: center;
             width: 100%;
-            height: 80px;
-            gap: 20px;
+            height: 3.75rem;
+            gap: 1.25rem;
             position: relative;
         }
 
         #secao3 input[type="text"] {
-            width: 300px;
-            height: 50px;
-            font-size: 1rem;
+            width: 17.5rem;
+            height: 2.75rem;
+            font-size: 0.95rem;
         }
 
         .area-botao-fugao {
@@ -180,9 +190,9 @@
             height: 100%;
             background-color: var(--danger);
             color: white;
-            font-size: 1.3rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(239, 68, 68, 0.2);
+            font-size: 1.1rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 0.25rem 0.375rem rgba(239, 68, 68, 0.2);
             transform-origin: right center;
             will-change: transform, opacity;
         }
@@ -192,7 +202,7 @@
 
     <section id="secao1" class="secao">
         <div class="titulo-secao">
-            <span>Preencha os campos abaixo</span>
+            <span>Experimento 1: Alvos Pequenos e Distantes (Pior Cenário)</span>
             <div id="tempo-secao1" class="resultado-tempo">Tempo: 0.00s</div>
         </div>
         <div class="wrapper-opcoes">
@@ -231,7 +241,7 @@
 
     <section id="secao2" class="secao">
         <div class="titulo-secao">
-            <span>Preencha os campos abaixo</span>
+            <span>Experimento 2: Alvos Grandes e Próximos (Melhor Cenário)</span>
             <div id="tempo-secao2" class="resultado-tempo">Tempo: 0.00s</div>
         </div>
         <div class="wrapper-opcoes">
@@ -270,7 +280,7 @@
 
     <section id="secao3" class="secao">
         <div class="titulo-secao">
-            <span>Informe seu nome e concluir para finalizar o teste</span>
+            <span>Desafio Final: Zona de Interação Máxima</span>
         </div>
         <div class="container-brincadeira">
             <input type="text" id="nome-brincadeira" placeholder="Digite seu nome completo..." oninput="verificarNome(this)">
@@ -281,13 +291,11 @@
     </section>
 
     <script>
-        // Gerenciamento de tempos e estados das seções de teste
         let tempos = {
             1: { inicio: null, ativo: false },
             2: { inicio: null, ativo: false }
         };
 
-        // Ouvintes para liberar os botões após a seleção do Combobox
         document.getElementById('s1-campus').addEventListener('change', () => document.getElementById('btn-s1-1').disabled = false);
         document.getElementById('s1-curso').addEventListener('change', () => document.getElementById('btn-s1-2').disabled = false);
         document.getElementById('s1-turno').addEventListener('change', () => document.getElementById('btn-s1-3').disabled = false);
@@ -325,7 +333,6 @@
             tempos[secao].ativo = false;
         }
 
-        // Lógica da Seção 3 - Botão Fujão com Fuga Exponencial (Anti-clique Inicial)
         const btnFugao = document.getElementById('btn-fugao');
         const areaLimite = document.getElementById('area-limite');
 
@@ -345,25 +352,19 @@
             const mouseX = e.clientX - rect.left;
             const larguraTotal = rect.width;
 
-            // Fator linear (0 a 1)
             let progressoMouse = mouseX / larguraTotal;
             if (progressoMouse < 0) progressoMouse = 0;
             if (progressoMouse > 0.96) progressoMouse = 0.96;
 
-            // MODIFICAÇÃO CRÍTICA: Aplica uma curva de raiz quadrada/exponencial invertida.
-            // Isso faz o 'fator de fuga' disparar rapidamente logo no início do movimento do mouse.
             let fator = Math.pow(progressoMouse, 0.4); 
 
-            // Define a escala proporcional uniforme (vai de 100% até 12% do tamanho original)
             let escalaMinima = 0.12;
             let escala = 1 - (fator * (1 - escalaMinima));
 
-            // Garante que a borda direita fique estrita ao limite da seção
             let larguraBotaoReduzido = larguraTotal * escala;
             let deslocamentoMaximo = larguraTotal - larguraBotaoReduzido;
             let moverParaDireita = fator * deslocamentoMaximo;
 
-            // Aplica instantaneamente a transformação
             btnFugao.style.transition = 'none'; 
             btnFugao.style.transform = `translateX(${moverParaDireita}px) scale(${escala})`;
             btnFugao.style.opacity = 1 - (fator * 0.25); 
