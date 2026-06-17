@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lei de Fitts</title>
+    <style>
+        :root {
+            --bg-secao1: #f0f4f8;
+            --bg-secao2: #f6f0fa;
+            --bg-secao3: #fcf8f2;
+            --primary: #3b82f6;
+            --success: #10b981;
+            --danger: #ef4444;
+            --text: #1e293b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            color: var(--text);
+            overflow: hidden;
+        }
+
+        /* Estrutura das Três Seções Verticais */
+        .secao {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 20px 40px;
+            position: relative;
+            border-bottom: 2px solid rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        #secao1 { background-color: var(--bg-secao1); }
+        #secao2 { background-color: var(--bg-secao2); }
+        #secao3 { background-color: var(--bg-secao3); border-bottom: none; }
+
+        .titulo-secao {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #475569;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .resultado-tempo {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--success);
+            background: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            display: none;
+        }
+
+        /* Formulários e Alinhamentos */
+        .wrapper-opcoes {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .linha-opcao {
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        select, input[type="text"] {
+            padding: 10px 14px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            background-color: white;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        select:focus, input[type="text"]:focus {
+            border-color: var(--primary);
+        }
+
+        button {
+            cursor: pointer;
+            font-weight: 600;
+            border: none;
+        }
+
+        button:disabled {
+            background-color: #cbd5e1 !important;
+            color: #94a3b8 !important;
+            cursor: not-allowed;
+            transform: none !important;
+            opacity: 1 !important;
+        }
+
+        /* SEÇÃO 1: Pior Cenário (Botão Longe e Pequeno) */
+        #secao1 .linha-opcao {
+            justify-content: space-between;
+        }
+        #secao1 select {
+            width: 250px;
+        }
+        #secao1 button {
+            padding: 4px 8px;
+            font-size: 0.75rem;
+            background-color: #64748b;
+            color: white;
+            border-radius: 4px;
+        }
+        #secao1 button:not(:disabled):hover {
+            background-color: #475569;
+        }
+
+        /* SEÇÃO 2: Melhor Cenário (Botão Perto e Grande) */
+        #secao2 .linha-opcao {
+            justify-content: flex-start;
+            gap: 15px;
+        }
+        #secao2 select {
+            width: 280px;
+        }
+        #secao2 button {
+            padding: 10px 24px;
+            font-size: 0.95rem;
+            background-color: var(--primary);
+            color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
+            transition: background-color 0.2s, transform 0.2s;
+        }
+        #secao2 button:not(:disabled):hover {
+            background-color: #2563eb;
+            transform: translateY(-1px);
+        }
+
+        /* SEÇÃO 3: A Brincadeira do Botão Fujão */
+        #secao3 .container-brincadeira {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            height: 80px;
+            gap: 20px;
+            position: relative;
+        }
+
+        #secao3 input[type="text"] {
+            width: 300px;
+            height: 50px;
+            font-size: 1rem;
+        }
+
+        .area-botao-fugao {
+            flex: 1;
+            height: 100%;
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        #btn-fugao {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--danger);
+            color: white;
+            font-size: 1.3rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(239, 68, 68, 0.2);
+            transform-origin: right center;
+            will-change: transform, opacity;
+        }
+    </style>
+</head>
+<body>
+
+    <section id="secao1" class="secao">
+        <div class="titulo-secao">
+            <span>Preencha o formulário</span>
+            <div id="tempo-secao1" class="resultado-tempo">Tempo: 0.00s</div>
+        </div>
+        <div class="wrapper-opcoes">
+            <div class="linha-opcao">
+                <select id="s1-campus" onchange="iniciarCrono(1)">
+                    <option value="" disabled selected>Escolha o Campus...</option>
+                    <option>IFPE Pesqueira</option>
+                    <option>IFPE Afogados da Ingazeira</option>
+                    <option>IFPE Barreiros</option>
+                    <option>IFPE Belo Jardim</option>
+                </select>
+                <button id="btn-s1-1" disabled onclick="confirmarOpcao(1, 1)">OK</button>
+            </div>
+            <div class="linha-opcao">
+                <select id="s1-curso" disabled>
+                    <option value="" disabled selected>Escolha o Curso...</option>
+                    <option>ADS</option>
+                    <option>Agropecuária</option>
+                    <option>Engenharia de Software</option>
+                    <option>Agroindústria</option>
+                </select>
+                <button id="btn-s1-2" disabled onclick="confirmarOpcao(1, 2)">OK</button>
+            </div>
+            <div class="linha-opcao">
+                <select id="s1-turno" disabled>
+                    <option value="" disabled selected>Escolha o Turno...</option>
+                    <option>Manhã</option>
+                    <option>Tarde</option>
+                    <option>Noite</option>
+                    <option>Integral</option>
+                </select>
+                <button id="btn-s1-3" disabled onclick="confirmarOpcao(1, 3)">OK</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="secao2" class="secao">
+        <div class="titulo-secao">
+            <span>Preencha o formulário</span>
+            <div id="tempo-secao2" class="resultado-tempo">Tempo: 0.00s</div>
+        </div>
+        <div class="wrapper-opcoes">
+            <div class="linha-opcao">
+                <select id="s2-campus" onchange="iniciarCrono(2)">
+                    <option value="" disabled selected>Escolha o Campus...</option>
+                    <option>IFPE Pesqueira</option>
+                    <option>IFPE Afogados da Ingazeira</option>
+                    <option>IFPE Barreiros</option>
+                    <option>IFPE Belo Jardim</option>
+                </select>
+                <button id="btn-s2-1" disabled onclick="confirmarOpcao(2, 1)">Confirmar Campus</button>
+            </div>
+            <div class="linha-opcao">
+                <select id="s2-curso" disabled>
+                    <option value="" disabled selected>Escolha o Curso...</option>
+                    <option>ADS</option>
+                    <option>Agropecuária</option>
+                    <option>Engenharia de Software</option>
+                    <option>Agroindústria</option>
+                </select>
+                <button id="btn-s2-2" disabled onclick="confirmarOpcao(2, 2)">Confirmar Curso</button>
+            </div>
+            <div class="linha-opcao">
+                <select id="s2-turno" disabled>
+                    <option value="" disabled selected>Escolha o Turno...</option>
+                    <option>Manhã</option>
+                    <option>Tarde</option>
+                    <option>Noite</option>
+                    <option>Integral</option>
+                </select>
+                <button id="btn-s2-3" disabled onclick="confirmarOpcao(2, 3)">Finalizar Configuração</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="secao3" class="secao">
+        <div class="titulo-secao">
+            <span>Informe seu nome e confirme para finalizar o teste</span>
+        </div>
+        <div class="container-brincadeira">
+            <input type="text" id="nome-brincadeira" placeholder="Digite seu nome completo..." oninput="verificarNome(this)">
+            <div class="area-botao-fugao" id="area-limite">
+                <button id="btn-fugao" disabled>Concluir</button>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Gerenciamento de tempos e estados das seções de teste
+        let tempos = {
+            1: { inicio: null, ativo: false },
+            2: { inicio: null, ativo: false }
+        };
+
+        // Ouvintes para liberar os botões após a seleção do Combobox
+        document.getElementById('s1-campus').addEventListener('change', () => document.getElementById('btn-s1-1').disabled = false);
+        document.getElementById('s1-curso').addEventListener('change', () => document.getElementById('btn-s1-2').disabled = false);
+        document.getElementById('s1-turno').addEventListener('change', () => document.getElementById('btn-s1-3').disabled = false);
+
+        document.getElementById('s2-campus').addEventListener('change', () => document.getElementById('btn-s2-1').disabled = false);
+        document.getElementById('s2-curso').addEventListener('change', () => document.getElementById('btn-s2-2').disabled = false);
+        document.getElementById('s2-turno').addEventListener('change', () => document.getElementById('btn-s2-3').disabled = false);
+
+        function iniciarCrono(secao) {
+            if (!tempos[secao].ativo) {
+                tempos[secao].inicio = performance.now();
+                tempos[secao].ativo = true;
+            }
+        }
+
+        function confirmarOpcao(secao, etapa) {
+            if (etapa === 1) {
+                document.getElementById(`s${secao}-curso`).disabled = false;
+                document.getElementById(`btn-s${secao}-1`).disabled = true;
+            } else if (etapa === 2) {
+                document.getElementById(`s${secao}-turno`).disabled = false;
+                document.getElementById(`btn-s${secao}-2`).disabled = true;
+            } else if (etapa === 3) {
+                document.getElementById(`btn-s${secao}-3`).disabled = true;
+                finalizarSecao(secao);
+            }
+        }
+
+        function finalizarSecao(secao) {
+            let fim = performance.now();
+            let tempoTotal = ((fim - tempos[secao].inicio) / 1000).toFixed(2);
+            let elementoTempo = document.getElementById(`tempo-secao${secao}`);
+            elementoTempo.innerText = `Tempo: ${tempoTotal}s`;
+            elementoTempo.style.display = 'block';
+            tempos[secao].ativo = false;
+        }
+
+        // Lógica da Seção 3 - Botão Fujão com Fuga Exponencial (Anti-clique Inicial)
+        const btnFugao = document.getElementById('btn-fugao');
+        const areaLimite = document.getElementById('area-limite');
+
+        function verificarNome(input) {
+            if (input.value.trim().length > 3) {
+                btnFugao.disabled = false;
+            } else {
+                btnFugao.disabled = true;
+                resetBotao();
+            }
+        }
+
+        areaLimite.addEventListener('mousemove', (e) => {
+            if (btnFugao.disabled) return;
+
+            const rect = areaLimite.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const larguraTotal = rect.width;
+
+            // Fator linear (0 a 1)
+            let progressoMouse = mouseX / larguraTotal;
+            if (progressoMouse < 0) progressoMouse = 0;
+            if (progressoMouse > 0.96) progressoMouse = 0.96;
+
+            // MODIFICAÇÃO CRÍTICA: Aplica uma curva de raiz quadrada/exponencial invertida.
+            // Isso faz o 'fator de fuga' disparar rapidamente logo no início do movimento do mouse.
+            let fator = Math.pow(progressoMouse, 0.4); 
+
+            // Define a escala proporcional uniforme (vai de 100% até 12% do tamanho original)
+            let escalaMinima = 0.12;
+            let escala = 1 - (fator * (1 - escalaMinima));
+
+            // Garante que a borda direita fique estrita ao limite da seção
+            let larguraBotaoReduzido = larguraTotal * escala;
+            let deslocamentoMaximo = larguraTotal - larguraBotaoReduzido;
+            let moverParaDireita = fator * deslocamentoMaximo;
+
+            // Aplica instantaneamente a transformação
+            btnFugao.style.transition = 'none'; 
+            btnFugao.style.transform = `translateX(${moverParaDireita}px) scale(${escala})`;
+            btnFugao.style.opacity = 1 - (fator * 0.25); 
+        });
+
+        areaLimite.addEventListener('mouseleave', () => {
+            resetBotao();
+        });
+
+        function resetBotao() {
+            btnFugao.style.transition = 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease-out';
+            btnFugao.style.transform = 'translateX(0) scale(1)';
+            btnFugao.style.opacity = '1';
+        }
+    </script>
+</body>
+</html>
