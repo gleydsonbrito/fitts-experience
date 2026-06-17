@@ -248,30 +248,30 @@
             <div class="linha-opcao">
                 <select id="s2-campus" onchange="iniciarCrono(2)">
                     <option value="" disabled selected>Escolha o Campus...</option>
-                    <option>IFPE Pesqueira</option>
                     <option>IFPE Afogados da Ingazeira</option>
                     <option>IFPE Barreiros</option>
                     <option>IFPE Belo Jardim</option>
+                    <option>IFPE Pesqueira</option>
                 </select>
                 <button id="btn-s2-1" disabled onclick="confirmarOpcao(2, 1)">Confirmar Campus</button>
             </div>
             <div class="linha-opcao">
                 <select id="s2-curso" disabled>
                     <option value="" disabled selected>Escolha o Curso...</option>
+                    <option>Agroindústria</option>
                     <option>ADS</option>
                     <option>Agropecuária</option>
                     <option>Engenharia de Software</option>
-                    <option>Agroindústria</option>
                 </select>
                 <button id="btn-s2-2" disabled onclick="confirmarOpcao(2, 2)">Confirmar Curso</button>
             </div>
             <div class="linha-opcao">
                 <select id="s2-turno" disabled>
                     <option value="" disabled selected>Escolha o Turno...</option>
-                    <option>Manhã</option>
-                    <option>Tarde</option>
-                    <option>Noite</option>
                     <option>Integral</option>
+                    <option>Manhã</option>
+                    <option>Noite</option>
+                    <option>Tarde</option>
                 </select>
                 <button id="btn-s2-3" disabled onclick="confirmarOpcao(2, 3)">Finalizar Configuração</button>
             </div>
@@ -285,7 +285,7 @@
         <div class="container-brincadeira">
             <input type="text" id="nome-brincadeira" placeholder="Digite seu nome completo..." oninput="verificarNome(this)">
             <div class="area-botao-fugao" id="area-limite">
-                <button id="btn-fugao" disabled>CONCLUIR PROCESSO SELETIVO</button>
+                <button id="btn-fugao" disabled>CONCLUIR</button>
             </div>
         </div>
     </section>
@@ -381,4 +381,10 @@
         }
     </script>
 </body>
+
+<div role="button">Enviar</div>
+<div role="dialog"></div>
+<div role="alert">Atenção</div> 
+<div role="navigation">Cadastrar</div>
+
 </html>
