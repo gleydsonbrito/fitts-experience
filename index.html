@@ -13,7 +13,7 @@
             --success: #10b981;
             --danger: #ef4444;
             --text: #1e293b;
-            /* Base de tamanho de fonte para controle do REM */
+            /* Base estável de tamanho de fonte para controle do REM */
             font-size: 16px;
         }
 
@@ -31,19 +31,19 @@
             min-height: 100vh;
             color: var(--text);
             background-color: #f8fafc;
-            /* Proíbe estritamente a rolagem horizontal, mas permite a vertical se faltar espaço */
+            /* Garante rolagem vertical natural e bloqueia estritamente a horizontal */
             overflow-x: hidden;
             overflow-y: auto;
         }
 
-        /* Estrutura das Três Seções Verticais - Agora Flexíveis */
+        /* Estrutura das Três Seções Verticais Adaptáveis */
         .secao {
             flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            min-height: 33.33vh; /* Garante que dividam a tela igualmente se houver espaço */
-            padding: 1.25rem 2rem;
+            min-height: 33.33vh; /* Divide o espaço uniformemente na tela grande */
+            padding: 1.5rem 2rem;
             position: relative;
             border-bottom: 0.0625rem solid rgba(0,0,0,0.08);
         }
@@ -75,11 +75,11 @@
             display: none;
         }
 
-        /* Formulários e Alinhamentos */
+        /* Formulários e Alinhamentos com Medidas Relativas */
         .wrapper-opcoes {
             display: flex;
             flex-direction: column;
-            gap: 0.5rem;
+            gap: 0.6rem;
             max-width: 75rem;
             width: 100%;
         }
@@ -202,7 +202,7 @@
 
     <section id="secao1" class="secao">
         <div class="titulo-secao">
-            <span>Experimento 1: Alvos Pequenos e Distantes (Pior Cenário)</span>
+            <span>Preencha os campos abaixo</span>
             <div id="tempo-secao1" class="resultado-tempo">Tempo: 0.00s</div>
         </div>
         <div class="wrapper-opcoes">
@@ -241,7 +241,7 @@
 
     <section id="secao2" class="secao">
         <div class="titulo-secao">
-            <span>Experimento 2: Alvos Grandes e Próximos (Melhor Cenário)</span>
+            <span>Preencha os campos abaixo</span>
             <div id="tempo-secao2" class="resultado-tempo">Tempo: 0.00s</div>
         </div>
         <div class="wrapper-opcoes">
@@ -280,7 +280,7 @@
 
     <section id="secao3" class="secao">
         <div class="titulo-secao">
-            <span>Desafio Final: Zona de Interação Máxima</span>
+            <span>Informe seu nome e concluir para finalizar o processo.</span>
         </div>
         <div class="container-brincadeira">
             <input type="text" id="nome-brincadeira" placeholder="Digite seu nome completo..." oninput="verificarNome(this)">
